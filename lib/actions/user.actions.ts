@@ -2,12 +2,12 @@
 
 import { cookies } from "next/headers";
 import { ID } from "node-appwrite";
-import { encryptId, parseStringify } from "../utils";
+import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { CountryCode, ProcessorTokenCreateRequest, ProcessorTokenCreateRequestProcessorEnum, Products } from "plaid";
 import { plaidClient } from "../plaid";
 import { revalidatePath } from "next/cache";
-import { addFundingSource } from "./dwolla.actions";
+import { addFundingSource, createDwollaCustomer } from "./dwolla.actions";
 
 const {APPWRITE_DATABASE_ID: DATABASE_ID,
     APPWRITE_USER_COLLECTION_ID: USER_COLLECTION_ID,
@@ -29,15 +29,40 @@ export const signIn = async ({email,password}:signInProps) => {
 
 export const signUp = async (userData:SignUpParams) => {
     
+    let newUserAccount;
 
     try {
-        const {account} = await createAdminClient();
+        const {account,database} = await createAdminClient();
 
-        const newUserAccount = account.create(ID.unique(), 
+        newUserAccount = account.create(ID.unique(), 
         userData.email,
         userData.password, 
         `${userData.firstName} ${userData.lastName}`,
         );
+
+        if(!newUserAccount) throw new Error('Error creating user')
+
+        const dwollaCustomerUrl = await createDwollaCustomer({
+          ...userData,
+          type:'personal'
+        });
+
+        if(!dwollaCustomerUrl) throw new Error('Error creating Dwolla customer')
+
+        const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
+
+        const newUser = await database.createDocument(
+          DATABASE_ID!,
+          USER_COLLECTION_ID!,
+          ID.unique(),
+
+          {
+            ...userData,
+            userId: (await newUserAccount).$id,
+            dwollaCustomerId,
+            dwollaCustomerUrl,
+          }
+        )
 
         const session = await account.
         createEmailPasswordSession(userData.email, userData.password);
@@ -49,7 +74,7 @@ export const signUp = async (userData:SignUpParams) => {
             secure: true,
         });
 
-        return parseStringify(newUserAccount);
+        return parseStringify(newUser);
     } catch (error) {
         console.error('Error',error);
     }
