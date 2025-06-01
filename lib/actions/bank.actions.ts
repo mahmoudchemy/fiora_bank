@@ -76,21 +76,21 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
     const accountData = accountsResponse.data.accounts[0];
 
     // get transfer transactions from appwrite
-   // const transferTransactionsData = await getTransactionsByBankId({
-     // bankId: bank.$id,
+    //const transferTransactionsData = await getTransactionsByBankId({
+      //bankId: bank.$id,
     //});
 
     //const transferTransactions = transferTransactionsData.documents.map(
-     // (transferData: Transaction) => ({
-       // id: transferData.$id,
-      //  name: transferData.name!,
-      //  amount: transferData.amount!,
-      //  date: transferData.$createdAt,
-      //  paymentChannel: transferData.channel,
-      //  category: transferData.category,
-      //  type: transferData.senderBankId === bank.$id ? "debit" : "credit",
-     // })
-    // );
+      //(transferData: Transaction) => ({
+        //id: transferData.$id,
+        //name: transferData.name!,
+        //amount: transferData.amount!,
+        //date: transferData.$createdAt,
+        //paymentChannel: transferData.channel,
+        //category: transferData.category,
+        //type: transferData.senderBankId === bank.$id ? "debit" : "credit",
+      //})
+     //);
 
     // get institution info from plaid
     const institution = await getInstitution({
