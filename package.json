@@ -17,6 +17,7 @@
     "@radix-ui/react-tabs": "^1.1.12",
     "@sentry/nextjs": "^9.22.0",
     "appwrite": "^18.1.1",
+    "browserslist": "^4.21.9",
     "chart.js": "^4.4.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -46,7 +47,7 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.1.8",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.4",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }

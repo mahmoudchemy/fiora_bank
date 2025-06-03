@@ -1,5 +1,4 @@
 import HeaderBox from '@/components/HeaderBox'
-import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
@@ -24,6 +23,7 @@ const Home = async ({searchParams:{id,page}}:SearchParamProps) => {
     <section className='home'>
       <div className='home-content'>
         <header className='home-header'>
+          <h1>test</h1>
           <HeaderBox
             type="greeting"
             title="Welcome"
@@ -37,13 +37,6 @@ const Home = async ({searchParams:{id,page}}:SearchParamProps) => {
             totalCurrentBalance={accounts?.totalCurrentBalance}
           />
         </header>
-
-        <RecentTransactions 
-          accounts={accountsData}
-          transactions={account?.transactions}
-          appwriteItemId={appwriteItemId}
-          page={currentPage}
-        />
       </div>
 
       <RightSidebar

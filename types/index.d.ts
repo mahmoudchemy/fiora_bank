@@ -74,7 +74,7 @@ declare type Transaction = {
   pending: boolean;
   category: string;
   date: string;
-  image: string;
+  image: string; 
   type: string;
   $createdAt: string;
   channel: string;
